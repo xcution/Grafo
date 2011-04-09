@@ -4,13 +4,21 @@ Created on 08/04/2011
 
 @author: Rafael Pedretti
 '''
+import os
+import sys
+caminho = os.path.abspath(os.path.join(os.path.dirname(__file__)))
+caminho = os.path.abspath(os.path.split(caminho)[0])
+sys.path.append(caminho)
+if sys.version_info[:2] <(2,7):
+    import unittest2
+else:
+    import unittest
+import testes.gno
 
-import gno
-import unittest
 
 if __name__ == "__main__":
     tests = []
-    for module in gno.__modules__:
+    for module in testes.gno.__modules__:
         tests.append(module.suite())
     
     suite = unittest.TestSuite()
