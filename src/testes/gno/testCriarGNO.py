@@ -4,7 +4,14 @@ Created on 08/04/2011
 
 @author: Rafael Pedretti
 '''
-import unittest
+import sys
+if sys.version_info[:2] <(2,7):
+    try:
+        import unittest2 as unittest
+    except ImportError:
+        print "unittest2 não encontrado! Você precisa do unittest2 instalado."
+else:
+    import unittest
 from grafo import GrafoNO
 
 class TestCriarGrafo(unittest.TestCase):
