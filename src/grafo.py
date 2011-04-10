@@ -61,7 +61,36 @@ class Grafo(object):
     
     def ehArvore(self):
         pass
-
+    
+    def buscaProfundidade(self, nomeInicial, nomeFinal):
+        visitados =[]
+        pilha = []
+        caminhos = []
+        return self._buscaProfundidade(nomeInicial, nomeFinal, visitados, pilha, caminhos)
+    
+    def _buscaProfundidade(self, nomeInicial, nomeFinal, \
+                          visitados, pilha, caminhos):
+        inicial = self.vertices[nomeInicial]
+        final = self.vertices[nomeFinal]
+        pilha.append(inicial)
+        visitados.append(inicial)
+        if inicial == final:
+            caminhos.append(pilha)
+            return caminhos
+        else:
+            for vertice in inicial.obterSucessores():
+                if vertice not in visitados:
+                    if vertice == final:
+                        pilha.append(vertice)
+                        caminhos.append(pilha)
+                        pilha.pop()
+                    else:
+                        self._buscaProfundidade(vertice.obterNome(), nomeFinal, visitados, pilha, caminhos)
+        
+        visitados.remove(inicial)
+        pilha.pop()
+        return caminhos
+                
 class GrafoNO(Grafo):
     
     def __init__(self):

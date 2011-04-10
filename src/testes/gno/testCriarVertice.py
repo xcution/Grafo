@@ -6,15 +6,15 @@ Created on 08/04/2011
 '''
 from grafo import Vertice
 import sys
-if sys.version_info[:2] <(2,7):
+if sys.version_info[:2] < (2,7):
     try:
         import unittest2 as unittest
     except ImportError:
-        print "unittest2 não encontrado! Você precisa do unittest2 instalado."
+        print 'unittest2 não instalado'
+        sys.exit(1)
 else:
     import unittest
-
-
+    
 class TestCriarVertice(unittest.TestCase):
 
     def testCriarVertice(self):

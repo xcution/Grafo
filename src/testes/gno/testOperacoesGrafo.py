@@ -6,15 +6,14 @@ Created on 08/04/2011
 '''
 from grafo import Vertice, GrafoNO
 import sys
-if sys.version_info[:2] <(2,7):
+if sys.version_info[:2] < (2,7):
     try:
         import unittest2 as unittest
     except ImportError:
-        print "unittest2 não encontrado! Você precisa do unittest2 instalado."
+        print 'unittest2 não instalado'
+        sys.exit(1)
 else:
     import unittest
-
-
 class TestOpGrafo(unittest.TestCase):
 
 
@@ -25,6 +24,8 @@ class TestOpGrafo(unittest.TestCase):
         self.v1 = self.vertices[1]
         self.v2 = self.vertices[2]
         self.v3 = self.vertices[3]
+        self.v4 = self.vertices[4]
+        self.v5 = self.vertices[5]
 
     def testAdicionarVertice(self):
         self.grafo.adicionarVertice(self.v1)
@@ -111,8 +112,28 @@ class TestOpGrafo(unittest.TestCase):
             self.assertEqual(vertice, verticeRemovido, 'era para serem o mesmo Vertice')
             self.assertFalse(self.grafo.ehCompleto(), 'era para ser completo')
         self.assertEqual(self.grafo.obterOrdem(), 0, 'era para estar vazio')
+
         
-       
+    def testBuscaProfundidade(self):
+        self.grafo.adicionarVertice(self.v0)
+        self.grafo.adicionarVertice(self.v1)
+        self.grafo.adicionarVertice(self.v2)
+        self.grafo.adicionarVertice(self.v3)
+        self.grafo.adicionarVertice(self.v4)
+        self.grafo.adicionarVertice(self.v5)
+        self.grafo.adicionarAresta(0, 1)
+        self.grafo.adicionarAresta(0, 2)
+        self.grafo.adicionarAresta(0, 3)
+        self.grafo.adicionarAresta(1, 4)
+        self.grafo.adicionarAresta(2, 4)
+        self.grafo.adicionarAresta(3, 5)
+        self.assertEqual(len(self.grafo.buscaProfundidade(0, 1)), 2)
+        self.assertEqual(len(self.grafo.buscaProfundidade(0, 3)), 1)
+        self.assertEqual(len(self.grafo.buscaProfundidade(0, 2)), 2)
+        self.assertEqual(len(self.grafo.buscaProfundidade(0, 4)), 2)
+        self.assertEqual(len(self.grafo.buscaProfundidade(0, 5)), 1)
+        self.assertEqual(len(self.grafo.buscaProfundidade(3, 5)), 1)
+        self.assertEqual(len(self.grafo.buscaProfundidade(5, 0)), 1)
         
 def suite():
     suite = unittest.TestSuite()
