@@ -63,34 +63,32 @@ class Grafo(object):
         pass
     
     def buscaProfundidade(self, nomeInicial, nomeFinal):
-        visitados =[]
         pilha = []
         caminhos = []
-        return self._buscaProfundidade(nomeInicial, nomeFinal, visitados, pilha, caminhos)
+        return self._buscaProfundidade(nomeInicial, nomeFinal, pilha, caminhos)
     
-    def _buscaProfundidade(self, nomeInicial, nomeFinal, \
-                          visitados, pilha, caminhos):
+    def _buscaProfundidade(self, nomeInicial, nomeFinal, pilha, caminhos):
         inicial = self.vertices[nomeInicial]
         final = self.vertices[nomeFinal]
         pilha.append(inicial)
-        visitados.append(inicial)
         if inicial == final:
-            caminhos.append(pilha)
+            pilhaC = [x for x in pilha]
+            caminhos.append(pilhaC)
             return caminhos
         else:
             for vertice in inicial.obterSucessores():
-                if vertice not in visitados:
+                if vertice not in pilha:
                     if vertice == final:
                         pilha.append(vertice)
-                        caminhos.append(pilha)
+                        pilhaC = [x for x in pilha]
+                        caminhos.append(pilhaC)
                         pilha.pop()
                     else:
-                        self._buscaProfundidade(vertice.obterNome(), nomeFinal, visitados, pilha, caminhos)
-        
-        visitados.remove(inicial)
-        pilha.pop()
-        return caminhos
-                
+                        caminhos = self._buscaProfundidade(vertice.obterNome(), nomeFinal, pilha, caminhos)
+            
+            pilha.pop()
+            return caminhos
+                        
 class GrafoNO(Grafo):
     
     def __init__(self):
