@@ -11,11 +11,19 @@ class Grafo(object):
     '''
     classdocs
     '''
-
     def __init__(self):
         self.vertices = {}
+        self.resetarInferencias()
+    
+    def resetarInferencias(self):
+        self.arvore = None
+        self.conexo = None
+        self.regular = None
+        self.completo = None
+
     
     def adicionarVertice(self, vertice):
+        self.resetarInferencias()
         assert type(vertice) == Vertice
         self.vertices[vertice.obterNome()] = vertice
         
@@ -33,25 +41,31 @@ class Grafo(object):
         return random.choice(self.vertices.values())
     
     def ehRegular(self):
-        vertices = self.obterVertices()
-        if len(vertices) != 0:
-            grau = vertices[0].grauEmissao()
-            for vertice in vertices:
-                if vertice.grauEmissao() != grau:
-                    return False
-                grau = vertice.grauEmissao()
-        return True
+        if self.regular is None:
+            vertices = self.obterVertices()
+            self.regular = True
+            if len(vertices) != 0:
+                grau = self.umVertice().grauEmissao()
+                for vertice in vertices:
+                    if vertice.grauEmissao() != grau:
+                        self.regular = False
+                        break
+                    grau = vertice.grauEmissao()
+        return self.regular
     
     def ehCompleto(self):
-        vertices = self.obterVertices()
-        if len(vertices) > 1:
-            ordem = self.obterOrdem()
-            for vertice in vertices:
-                if vertice.grauEmissao() != ordem - 1:
-                    return False
-            return True
-        else:
-            return False
+        if self.completo is None:
+            vertices = self.obterVertices()
+            if len(vertices) > 1:
+                self.completo = True
+                ordem = self.obterOrdem()
+                for vertice in vertices:
+                    if vertice.grauEmissao() != ordem - 1:
+                        self.completo = False
+                        break
+            else:
+                self.completo = False
+        return self.completo                
             
     def fechoTransitivo(self, vertice):
         pass
@@ -72,7 +86,7 @@ class Grafo(object):
         final = self.vertices[nomeFinal]
         pilha.append(inicial)
         if inicial == final:
-            pilhaC = [x for x in pilha]
+            pilhaC = list(pilha)
             caminhos.append(pilhaC)
             return caminhos
         else:
@@ -80,7 +94,7 @@ class Grafo(object):
                 if vertice not in pilha:
                     if vertice == final:
                         pilha.append(vertice)
-                        pilhaC = [x for x in pilha]
+                        pilhaC = list(pilha)
                         caminhos.append(pilhaC)
                         pilha.pop()
                     else:
@@ -96,6 +110,7 @@ class GrafoNO(Grafo):
     
     def removerVertice(self, nomeVertice):
         assert nomeVertice in self.vertices.keys()
+        self.resetarInferencias()
         vertice = self.vertices[nomeVertice]
         for adjacente in self.adjacentes(nomeVertice):
             adjacente.removerSucessor(vertice)
@@ -104,6 +119,7 @@ class GrafoNO(Grafo):
     def removerAresta(self, nomeVertice1, nomeVertice2):
         assert nomeVertice1 in self.vertices.keys()
         assert nomeVertice2 in self.vertices.keys()
+        self.resetarInferencias()
         v1 = self.vertices[nomeVertice1]
         v2 = self.vertices[nomeVertice2]
         v1.removerSucessor(v2)
@@ -112,6 +128,7 @@ class GrafoNO(Grafo):
     def adicionarAresta(self, nomeVertice1, nomeVertice2):#TODO: implementar aresta com dados
         assert nomeVertice1 in self.vertices.keys()
         assert nomeVertice2 in self.vertices.keys()
+        self.resetarInferencias()
         v1 = self.vertices[nomeVertice1]
         v2 = self.vertices[nomeVertice2]
         v1.adicionarSucessor(v2)
@@ -135,6 +152,7 @@ class GrafoO(Grafo):
     
     def removerVertice(self, nomeVertice):
         assert nomeVertice in self.vertices.keys()
+        self.resetarInferencias()
         vertice = self.vertices[nomeVertice]
         
         for sucessor in self.sucessores(nomeVertice):
@@ -148,6 +166,7 @@ class GrafoO(Grafo):
     def removerAresta(self, nomeVertice1, nomeVertice2):
         assert nomeVertice1 in self.vertices.keys()
         assert nomeVertice2 in self.vertices.keys()
+        self.resetarInferencias()
         vertice1 = self.vertices[nomeVertice1]
         vertice2 = self.vertices[nomeVertice2]
         vertice1.removerSucessor(vertice2)
@@ -156,6 +175,7 @@ class GrafoO(Grafo):
     def adicionarAresta(self, nomeVertice1, nomeVertice2):#TODO: implementar aresta com dados
         assert nomeVertice1 in self.vertices.keys()
         assert nomeVertice2 in self.vertices.keys()
+        self.resetarInferencias()
         vertice1 = self.vertices[nomeVertice1]
         vertice2 = self.vertices[nomeVertice2]
         vertice1.adicionarSucessor(vertice2)
