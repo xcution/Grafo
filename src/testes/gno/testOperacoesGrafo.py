@@ -14,6 +14,7 @@ if sys.version_info[:2] < (2,7):
         sys.exit(1)
 else:
     import unittest
+    
 class TestOpGrafo(unittest.TestCase):
 
 
@@ -145,6 +146,17 @@ class TestOpGrafo(unittest.TestCase):
         self.assertEqual(len(caminhos), 2)
         self.assertIn([self.v3, self.v0, self.v2, self.v4], caminhos)
         self.assertIn([self.v3, self.v0, self.v1, self.v4], caminhos)
+        
+    def testEhConexo(self):
+        self.grafo.adicionarVertice(self.v0)
+        self.grafo.adicionarVertice(self.v1)
+        self.grafo.adicionarVertice(self.v2)
+        self.grafo.adicionarVertice(self.v3)
+        self.assertFalse(self.grafo.ehConexo())
+        self.grafo.adicionarAresta(0, 1)
+        self.grafo.adicionarAresta(0, 2)
+        self.grafo.adicionarAresta(0, 3)
+        self.assertTrue(self.grafo.ehConexo())
         
 def suite():
     suite = unittest.TestSuite()

@@ -13,7 +13,10 @@ class Grafo(object):
     '''
     def __init__(self):
         self.vertices = {}
-        self.resetarInferencias()
+        self.arvore = None
+        self.conexo = None
+        self.regular = None
+        self.completo = None
     
     def resetarInferencias(self):
         self.arvore = None
@@ -70,12 +73,9 @@ class Grafo(object):
     def fechoTransitivo(self, vertice):
         pass
     
-    def ehConexo(self):
-        pass 
-    
     def ehArvore(self):
         pass
-    
+
     def buscaProfundidade(self, nomeInicial, nomeFinal):
         pilha = []
         caminhos = []
@@ -107,6 +107,17 @@ class GrafoNO(Grafo):
     
     def __init__(self):
         super(GrafoNO, self).__init__()
+        
+    def ehConexo(self):
+        arestas = 0
+        vertices = self.obterVertices()
+        for vertice in vertices:
+            adjacentes = self.adjacentes(vertice.obterNome())
+            if len(adjacentes) == 0:
+                return False
+            arestas += len(adjacentes)
+        arestas = arestas/2
+        return arestas == len(vertices) - 1
     
     def removerVertice(self, nomeVertice):
         assert nomeVertice in self.vertices.keys()
@@ -149,6 +160,17 @@ class GrafoO(Grafo):
     
     def __init__(self):
         super(GrafoO, self).__init__()
+        
+    def ehConexo(self):
+        arestas = 0
+        vertices = self.obterVertices()
+        for vertice in vertices:
+            sucessores = self.sucessores(vertice.obterNome())
+            print vertice, sucessores
+            if len(sucessores) == 0:
+                return False
+            arestas += len(sucessores)
+        return arestas == len(vertices) - 1
     
     def removerVertice(self, nomeVertice):
         assert nomeVertice in self.vertices.keys()
