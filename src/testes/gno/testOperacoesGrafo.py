@@ -30,89 +30,89 @@ class TestOpGrafo(unittest.TestCase):
 
     def testAdicionarVertice(self):
         self.grafo.adicionarVertice(self.v1)
-        self.assertIn(self.v1, self.grafo.obterVertices(), 'vertice não adicionado')
-        self.assertEqual(len(self.grafo.obterVertices()), 1, 'numero de vertices incorreto')
+        self.assertIn(self.v1, self.grafo.obterVertices())
+        self.assertEqual(len(self.grafo.obterVertices()), 1)
         self.grafo.adicionarVertice(self.v0)
-        self.assertEqual(len(self.grafo.obterVertices()), 2, 'numero de vertices incorreto')
+        self.assertEqual(len(self.grafo.obterVertices()), 2)
         
     def testObterOrdem(self):
-        self.assertEqual(self.grafo.obterOrdem(), 0, 'ordem do grafo incorreta')
+        self.assertEqual(self.grafo.obterOrdem(), 0)
         self.grafo.adicionarVertice(self.v1)
-        self.assertEqual(self.grafo.obterOrdem(), 1, 'ordem do grafo incorreta')
+        self.assertEqual(self.grafo.obterOrdem(), 1)
         
     def testAdicionarAresta(self):
         self.grafo.adicionarVertice(self.v1)
         self.grafo.adicionarVertice(self.v0)
         self.grafo.adicionarAresta(0, 1)
-        self.assertEqual(len(self.grafo.adjacentes(0)), 1, 'era para ter apenas um adjacente')
-        self.assertEqual(len(self.grafo.adjacentes(1)), 1, 'era para ter apenas um adjacente')
-        self.assertIn(self.v0, self.grafo.adjacentes(1), 'v0 era para estar como adjacente de v1')
-        self.assertIn(self.v1, self.grafo.adjacentes(0), 'v1 era para estar como sucessor de v0')
+        adjV0 = self.grafo.obterAdjacentes(0) 
+        adjV1 = self.grafo.obterAdjacentes(1)
+        self.assertEqual(len(adjV0), 1)
+        self.assertEqual(len(adjV1), 1)
+        self.assertIn(self.v0, adjV1)
+        self.assertIn(self.v1, adjV0)
         
     def testRemoverAresta(self):
         self.grafo.adicionarVertice(self.v1)
         self.grafo.adicionarVertice(self.v0)
         self.grafo.adicionarAresta(0, 1)
         self.grafo.removerAresta(0, 1)
-        self.assertEqual(len(self.grafo.adjacentes(0)), 0, 'era para ter apenas um adjacente')
-        self.assertEqual(len(self.grafo.adjacentes(1)), 0, 'era para ter apenas um adjacente')
-        self.assertNotIn(self.v0, self.grafo.adjacentes(1), 'v0 era para estar como adjacente de v1')
-        self.assertNotIn(self.v1, self.grafo.adjacentes(0), 'v1 era para estar como sucessor de v0')
+        self.assertEqual(len(self.grafo.obterAdjacentes(0)), 0)
+        self.assertEqual(len(self.grafo.obterAdjacentes(1)), 0)
+        self.assertNotIn(self.v0, self.grafo.obterAdjacentes(1))
+        self.assertNotIn(self.v1, self.grafo.obterAdjacentes(0))
         
     def testEhRegular(self):
         self.grafo.adicionarVertice(self.v1)
         self.grafo.adicionarVertice(self.v0)
         self.grafo.adicionarVertice(self.v2)
         self.grafo.adicionarVertice(self.v3)
-        self.assertTrue(self.grafo.ehRegular(), 'era pra ser regular')
+        self.assertTrue(self.grafo.ehRegular())
         self.grafo.adicionarAresta(0, 1)
-        self.assertFalse(self.grafo.ehRegular(), 'não era pra ser regular')
+        self.assertFalse(self.grafo.ehRegular())
         self.grafo.adicionarAresta(1, 2)
-        self.assertFalse(self.grafo.ehRegular(), 'não era pra ser regular')
+        self.assertFalse(self.grafo.ehRegular())
         self.grafo.adicionarAresta(2, 3)
-        self.assertFalse(self.grafo.ehRegular(), 'não era pra ser regular')
+        self.assertFalse(self.grafo.ehRegular())
         self.grafo.adicionarAresta(3, 0)
-        self.assertTrue(self.grafo.ehRegular(), 'era pra ser regular')
+        self.assertTrue(self.grafo.ehRegular(),)
     
     def testEhCompleto(self):
         self.grafo.adicionarVertices(self.vertices)
-        self.assertFalse(self.grafo.ehCompleto(), 'não era pra ser completo')
+        self.assertFalse(self.grafo.ehCompleto())
         for i in xrange(0,9):
             for j in xrange(i+1,10):
                 self.grafo.adicionarAresta(i, j)
-        self.assertTrue(self.grafo.ehCompleto(), 'era pra ser completo')
+        self.assertTrue(self.grafo.ehCompleto())
         
     def testObterVertices(self):
         self.grafo.adicionarVertices(self.vertices)
-        self.assertSequenceEqual(self.vertices, self.grafo.obterVertices(), \
-                                 'as listas deveriam ser iguais', seq_type = list)
+        self.assertSequenceEqual(self.vertices, self.grafo.obterVertices(), seq_type = list)
         
     def testUmVertice(self):
         #TODO: teste fraco...
         self.grafo.adicionarVertices(self.vertices)
         vertice = self.grafo.umVertice()
-        self.assertIsNotNone(vertice, 'retornado Null ao invés de um Vertice')
-        self.assertIn(vertice, self.grafo.obterVertices(), \
-                      'retornou um vertice não pertencente ao grafo')
+        self.assertIsNotNone(vertice)
+        self.assertIn(vertice, self.grafo.obterVertices())
         
     def testRemoverVertice(self):
         self.grafo.adicionarVertices(self.vertices)
         for i in xrange(0,9):
             for j in xrange(i+1,10):
                 self.grafo.adicionarAresta(i, j)
-        self.assertTrue(self.grafo.ehCompleto(), 'era pra ser completo')
+        self.assertTrue(self.grafo.ehCompleto())
         vertices = self.grafo.obterVertices()
         for vertice in vertices[:-2]:
             verticeRemovido = self.grafo.removerVertice(vertice.obterNome())
-            self.assertNotIn(verticeRemovido, self.grafo.obterVertices(), 'vertice não removido efetivamente')
-            self.assertEqual(vertice, verticeRemovido, 'era para serem o mesmo Vertice')
-            self.assertTrue(self.grafo.ehCompleto(), 'era para ser completo')
+            self.assertNotIn(verticeRemovido, self.grafo.obterVertices())
+            self.assertEqual(vertice, verticeRemovido)
+            self.assertTrue(self.grafo.ehCompleto())
         for vertice in vertices[-2:]:
             verticeRemovido = self.grafo.removerVertice(vertice.obterNome())
-            self.assertNotIn(verticeRemovido, self.grafo.obterVertices(), 'vertice não removido efetivamente')
-            self.assertEqual(vertice, verticeRemovido, 'era para serem o mesmo Vertice')
-            self.assertFalse(self.grafo.ehCompleto(), 'era para ser completo')
-        self.assertEqual(self.grafo.obterOrdem(), 0, 'era para estar vazio')
+            self.assertNotIn(verticeRemovido, self.grafo.obterVertices())
+            self.assertEqual(vertice, verticeRemovido)
+            self.assertFalse(self.grafo.ehCompleto())
+        self.assertEqual(self.grafo.obterOrdem(), 0)
 
         
     def testBuscaProfundidade(self):
@@ -125,6 +125,7 @@ class TestOpGrafo(unittest.TestCase):
         self.grafo.adicionarAresta(0, 1)
         self.grafo.adicionarAresta(0, 2)
         self.grafo.adicionarAresta(0, 3)
+        self.assertEqual(len(self.grafo.buscaProfundidade(0, 4)), 0)
         self.grafo.adicionarAresta(1, 4)
         self.grafo.adicionarAresta(2, 4)
         self.grafo.adicionarAresta(3, 5)
@@ -152,11 +153,32 @@ class TestOpGrafo(unittest.TestCase):
         self.grafo.adicionarVertice(self.v1)
         self.grafo.adicionarVertice(self.v2)
         self.grafo.adicionarVertice(self.v3)
+        self.grafo.adicionarVertice(self.v4)
         self.assertFalse(self.grafo.ehConexo())
         self.grafo.adicionarAresta(0, 1)
         self.grafo.adicionarAresta(0, 2)
         self.grafo.adicionarAresta(0, 3)
+        self.assertFalse(self.grafo.ehConexo())
+        self.grafo.adicionarAresta(1, 4)
         self.assertTrue(self.grafo.ehConexo())
+        self.grafo.adicionarAresta(2, 4)
+        self.assertTrue(self.grafo.ehConexo())
+        
+    def testEhArvore(self):
+        self.grafo.adicionarVertice(self.v0)
+        self.grafo.adicionarVertice(self.v1)
+        self.grafo.adicionarVertice(self.v2)
+        self.grafo.adicionarVertice(self.v3)
+        self.grafo.adicionarVertice(self.v4)
+        self.assertFalse(self.grafo.ehArvore())
+        self.grafo.adicionarAresta(0, 1)
+        self.grafo.adicionarAresta(0, 2)
+        self.grafo.adicionarAresta(0, 3)
+        self.assertFalse(self.grafo.ehArvore())
+        self.grafo.adicionarAresta(1, 4)
+        self.assertTrue(self.grafo.ehArvore())
+        self.grafo.adicionarAresta(2, 4)
+        self.assertFalse(self.grafo.ehArvore())
         
 def suite():
     suite = unittest.TestSuite()

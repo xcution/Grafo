@@ -19,12 +19,12 @@ class TestCriarVertice(unittest.TestCase):
 
     def testCriarVertice(self):
         nome = 'V1'
-        v1 = Vertice(nome)
-        self.assertEqual(nome, v1.obterNome(), 'Vertice criado com nome diferente')
-        self.assertEqual(v1.obterSucessores(), [], 'vertice criado com sucessores')
-        self.assertEqual(v1.obterAntecessores(), [], 'vertice criado com antessores')
-        self.assertEqual(v1.grauEmissao(), 0, 'Vertice criado com uma aresta de saida')
-        self.assertEqual(v1.grauRecepcao(), 0, 'Vertice criado com uma aresta de entrada')
+        dado1 = 'azul'
+        dado2 =  2
+        v1 = Vertice(nome, dado1, dado2)
+        self.assertEqual(nome, v1.obterNome())
+        self.assertEqual((dado1,dado2), v1.obterDados())
+        
         
 def suite():
     suite = unittest.TestSuite()
