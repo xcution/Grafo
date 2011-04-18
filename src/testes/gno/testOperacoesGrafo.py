@@ -61,6 +61,16 @@ class TestOpGrafo(unittest.TestCase):
         self.assertNotIn(self.v0, self.grafo.obterAdjacentes(1))
         self.assertNotIn(self.v1, self.grafo.obterAdjacentes(0))
         
+    def testObterAresta(self):
+        self.grafo.adicionarVertice(self.v1)
+        self.grafo.adicionarVertice(self.v0)
+        self.grafo.adicionarVertice(self.v2)
+        self.grafo.adicionarVertice(self.v3)
+        self.grafo.adicionarAresta(0, 2, 'aresta 0 e 2')
+        self.grafo.adicionarAresta(0, 1, 'peso da aresta', 'desc. aresta', 'arg3', 'etc...')
+        print self.grafo.obterAresta(0, 1)
+        
+        
     def testEhRegular(self):
         self.grafo.adicionarVertice(self.v1)
         self.grafo.adicionarVertice(self.v0)

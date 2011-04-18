@@ -139,7 +139,7 @@ class GrafoNO(Grafo):
         self.redefinirInferencias()
         assert type(vertice) == Vertice
         self.vertices[vertice.obterNome()] = vertice
-        self.adjacentes[vertice.obterNome()] = []
+        self.adjacentes[vertice.obterNome()] = {}
     
     def removerVertice(self, nomeVertice):
         try:
@@ -155,8 +155,8 @@ class GrafoNO(Grafo):
             self.redefinirInferencias()
             v1 = self.vertices[nomeVertice1]
             v2 = self.vertices[nomeVertice2]
-            self.adjacentes[nomeVertice1].append([v2, dados])
-            self.adjacentes[nomeVertice2].append([v1, dados])            
+            self.adjacentes[nomeVertice1][v2] = list(dados)
+            self.adjacentes[nomeVertice2][v1] = list(dados)
         except KeyError as e:
             return self._erroChave(e)
         
@@ -165,18 +165,21 @@ class GrafoNO(Grafo):
             self.redefinirInferencias()
             v1 = self.vertices[nomeVertice1]
             v2 = self.vertices[nomeVertice2]
-            adjV1 = self.obterAdjacentes(nomeVertice1)
-            adjV2 = self.obterAdjacentes(nomeVertice2)
-            indice = adjV1.index(v2)
-            print self.adjacentes[nomeVertice1].pop(indice)
-            indice = adjV2.index(v1)
-            print self.adjacentes[nomeVertice2].pop(indice)
+            self.adjacentes[nomeVertice1].pop(v2)
+            self.adjacentes[nomeVertice2].pop(v1)
         except KeyError as e:
             return self._erroChave(e)
+        
+    def obterAresta(self, nomeVertice1, nomeVertice2):
+        vertice2 = self.vertices[nomeVertice2]
+        return self.adjacentes[nomeVertice1][vertice2]
 
     def obterAdjacentes(self, nomeVertice):
+        adjacentes = []
         try:
-            return [vertice[0] for vertice in self.adjacentes[nomeVertice]]
+            for vertice in self.adjacentes[nomeVertice]:
+                adjacentes.append(vertice)
+            return adjacentes
         except KeyError as e:
             return self._erroChave(e)
     
