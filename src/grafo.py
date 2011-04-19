@@ -53,8 +53,14 @@ class Grafo(object):
         pass
 
         
-    def _erroChave(self, e):
+    def _erroChaveNaoExiste(self, e):
         print ' reimplementar: vertice ' + str(e) + " não pertence ao grafo"
+        
+    def _erroChaveExiste(self, e):
+        print ' reimplementar: vertice ' + str(e) + " já pertence ao grafo"
+    
+    def _erroTipoVertice(self, e):
+        print ' reimplementar: ' + str(e) + ' não é do tipo Vertice'
                         
 class GrafoNO(Grafo):
     
@@ -136,11 +142,19 @@ class GrafoNO(Grafo):
         return self.arvore
       
     def adicionarVertice(self, vertice):
-        self.redefinirInferencias()
-        assert type(vertice) == Vertice
-        self.vertices[vertice.obterNome()] = vertice
-        self.adjacentes[vertice.obterNome()] = {}
-    
+        try:
+            self.redefinirInferencias()
+            if type(vertice) != Vertice:
+                raise TypeError
+            if vertice.obterNome() in self.vertices:
+                raise KeyError
+            self.vertices[vertice.obterNome()] = vertice
+            self.adjacentes[vertice.obterNome()] = {}
+        except TypeError as e:
+            self._erroTipoVertice(e)
+        except KeyError as e:
+            self._erroChaveExiste(e)
+            
     def removerVertice(self, nomeVertice):
         try:
             self.redefinirInferencias()
@@ -148,7 +162,7 @@ class GrafoNO(Grafo):
                 self.removerAresta(nomeVertice, adjacente.obterNome())
             return self.vertices.pop(nomeVertice)
         except KeyError as e:
-            return self._erroChave(e)
+            return self._erroChaveNaoExiste(e)
          
     def adicionarAresta(self, nomeVertice1, nomeVertice2, *dados):#TODO: implementar aresta com dados
         try:
@@ -158,7 +172,7 @@ class GrafoNO(Grafo):
             self.adjacentes[nomeVertice1][v2] = list(dados)
             self.adjacentes[nomeVertice2][v1] = list(dados)
         except KeyError as e:
-            return self._erroChave(e)
+            return self._erroChaveNaoExiste(e)
         
     def removerAresta(self, nomeVertice1, nomeVertice2):
         try:
@@ -168,7 +182,7 @@ class GrafoNO(Grafo):
             self.adjacentes[nomeVertice1].pop(v2)
             self.adjacentes[nomeVertice2].pop(v1)
         except KeyError as e:
-            return self._erroChave(e)
+            return self._erroChaveNaoExiste(e)
         
     def obterAresta(self, nomeVertice1, nomeVertice2):
         vertice2 = self.vertices[nomeVertice2]
@@ -181,14 +195,14 @@ class GrafoNO(Grafo):
                 adjacentes.append(vertice)
             return adjacentes
         except KeyError as e:
-            return self._erroChave(e)
+            return self._erroChaveNaoExiste(e)
     
     def grau(self, nomeVertice):
         try:
             vertice = self.vertices[nomeVertice]
             return vertice.grauEmissao()
         except KeyError as e:
-            return self._erroChave(e)
+            return self._erroChaveNaoExiste(e)
 
     
 class Vertice(object):
