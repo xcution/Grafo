@@ -8,9 +8,7 @@ Created on 07/04/2011
 import random
 
 class Grafo(object):
-    '''
-    classdocs
-    '''
+
     def __init__(self):
         self.vertices = {}
         self.arvore = None
@@ -140,6 +138,18 @@ class GrafoNO(Grafo):
                 arestas = arestas/2
                 self.arvore = arestas == len(vertices) - 1
         return self.arvore
+    
+    def fechoTransitivo(self, vertice, pilha = []):
+        fecho = set()
+        pilha.put(vertice)
+        while pilha:
+            vertice = pilha[:-1]
+            adjacentes = self.obterAdjacentes(vertice.obterNome())
+            for adjacente in adjacentes:
+                if adjacente not in fecho:
+                    fecho.add(adjacente)
+        pilha.pop()       
+        return fecho
       
     def adicionarVertice(self, vertice):
         try:
@@ -164,7 +174,7 @@ class GrafoNO(Grafo):
         except KeyError as e:
             return self._erroChaveNaoExiste(e)
          
-    def adicionarAresta(self, nomeVertice1, nomeVertice2, *dados):#TODO: implementar aresta com dados
+    def adicionarAresta(self, nomeVertice1, nomeVertice2, *dados):
         try:
             self.redefinirInferencias()
             v1 = self.vertices[nomeVertice1]
@@ -204,7 +214,6 @@ class GrafoNO(Grafo):
         except KeyError as e:
             return self._erroChaveNaoExiste(e)
 
-    
 class Vertice(object):
     
     def __init__(self, identificador, *dados):

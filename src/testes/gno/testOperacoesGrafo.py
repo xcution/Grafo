@@ -190,6 +190,17 @@ class TestOpGrafo(unittest.TestCase):
         self.grafo.adicionarAresta(2, 4)
         self.assertFalse(self.grafo.ehArvore())
         
+    def testFechoTransitivo(self):
+        self.grafo.adicionarVertice(self.v0)
+        self.grafo.adicionarVertice(self.v1)
+        self.grafo.adicionarVertice(self.v2)
+        self.grafo.adicionarVertice(self.v3)
+        self.grafo.adicionarVertice(self.v4)
+        self.grafo.adicionarAresta(0, 1)
+        self.grafo.adicionarAresta(0, 2)
+        self.grafo.adicionarAresta(0, 3)
+        print self.grafo.fechoTransitivo(self.v0)
+        
 def suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestOpGrafo))
