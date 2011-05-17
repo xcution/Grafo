@@ -68,7 +68,7 @@ class TestOpGrafo(unittest.TestCase):
         self.grafo.adicionarVertice(self.v3)
         self.grafo.adicionarAresta(0, 2, 'aresta 0 e 2')
         self.grafo.adicionarAresta(0, 1, 'peso da aresta', 'desc. aresta', 'arg3', 'etc...')
-        print self.grafo.obterAresta(0, 1)
+        self.assertEquals(self.grafo.obterAresta(0, 1),['peso da aresta', 'desc. aresta', 'arg3', 'etc...'])
         
         
     def testEhRegular(self):
@@ -196,10 +196,29 @@ class TestOpGrafo(unittest.TestCase):
         self.grafo.adicionarVertice(self.v2)
         self.grafo.adicionarVertice(self.v3)
         self.grafo.adicionarVertice(self.v4)
+        self.grafo.adicionarVertice(self.v5)
         self.grafo.adicionarAresta(0, 1)
         self.grafo.adicionarAresta(0, 2)
-        self.grafo.adicionarAresta(0, 3)
-        print self.grafo.fechoTransitivo(self.v0)
+        self.grafo.adicionarAresta(2, 3)
+        self.grafo.adicionarAresta(4, 5)
+        fecho0 = self.grafo.fechoTransitivo(self.v0, set())
+        fecho1 = self.grafo.fechoTransitivo(self.v1, set())
+        fecho2 = self.grafo.fechoTransitivo(self.v2, set())
+        fecho4 = self.grafo.fechoTransitivo(self.v4, set())
+        fecho5 = self.grafo.fechoTransitivo(self.v5, set())
+        
+        print 0,fecho0
+        print 1,fecho1
+        print 2,fecho2
+        print 4,fecho4
+        print 5,fecho5
+        
+        self.assertEqual(fecho0, fecho1)
+        self.assertEqual(fecho0, fecho2)
+        self.assertEqual(fecho1, fecho0)
+        self.assertEqual(fecho4, fecho5)
+        self.assertEqual(fecho5, fecho4)
+        self.assertTrue(len(fecho0.intersection(fecho4)) == 0)
         
 def suite():
     suite = unittest.TestSuite()

@@ -139,16 +139,13 @@ class GrafoNO(Grafo):
                 self.arvore = arestas == len(vertices) - 1
         return self.arvore
     
-    def fechoTransitivo(self, vertice, pilha = []):
+    def fechoTransitivo(self, vertice, visitados = set()):
         fecho = set()
-        pilha.put(vertice)
-        while pilha:
-            vertice = pilha[:-1]
-            adjacentes = self.obterAdjacentes(vertice.obterNome())
-            for adjacente in adjacentes:
-                if adjacente not in fecho:
-                    fecho.add(adjacente)
-        pilha.pop()       
+        fecho.add(vertice.obterNome())
+        visitados.add(vertice.obterNome())
+        for adjacente in self.obterAdjacentes(vertice.obterNome()):
+            if adjacente.obterNome() not in visitados:
+                fecho = fecho.union(self.fechoTransitivo(adjacente,visitados))
         return fecho
       
     def adicionarVertice(self, vertice):
