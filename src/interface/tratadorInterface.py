@@ -36,7 +36,6 @@ class TratadorInterface(QMainWindow, Ui_InterfaceQt, Observer):
             if nome == '':
                 QMessageBox(self).critical(self, 'ERRO', 'O Gravo deve ter um nome!', buttons=QMessageBox.Ok)
                 return
-            print 'grafo ainda não existe...criando'
             self.grafo = GrafoNO(nome)
             self.observe(self.grafo)
         self.limparInferencias()

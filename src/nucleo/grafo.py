@@ -98,15 +98,28 @@ class GrafoNO(Grafo):
                       Total -> O(n) | n é o número de vértices
         '''
         if self.conexo is None:
-            arestas = 0
-            vertices = self.obterVertices()
             self.conexo = True
-            for vertice in vertices:
+            pilha = []
+            marcados = set()
+            vertice = self.umVertice()
+            marcados.add(vertice)
+            pilha.append(vertice)
+            while pilha:
+                vertice = pilha[-1]
                 adjacentes = self.obterAdjacentes(vertice.obterNome())
-                if len(adjacentes) == 0:
+                for adjacente in adjacentes:
+                    if adjacente not in marcados:
+                        pilha.append(adjacente)
+                        marcados.add(adjacente)
+
+                if set(adjacentes).issubset(marcados):
+
+                    pilha.remove(vertice)
+            
+            for vertice in self.obterVertices():
+                if vertice not in marcados:
                     self.conexo = False
-                arestas += len(adjacentes)
-            self.conexo = arestas/2 >= len(self.obterVertices()) -1 
+
         return self.conexo
     
     def buscaProfundidade(self, nomeInicial, nomeFinal):
@@ -114,9 +127,10 @@ class GrafoNO(Grafo):
         '''
         pilha = []
         caminhos = []
-        return self._buscaProfundidade(nomeInicial, nomeFinal, pilha, caminhos)
+        arvore = self.ehArvore()
+        return self._buscaProfundidade(nomeInicial, nomeFinal, pilha, caminhos, arvore)
     
-    def _buscaProfundidade(self, nomeInicial, nomeFinal, pilha, caminhos):
+    def _buscaProfundidade(self, nomeInicial, nomeFinal, pilha, caminhos, arvore):
         '''Executa uma busca em profundidade e retorna Todos os caminhos
            que levam do vértice 'nomeInicial' ao vértice 'nomeFinal'
            Complexidade: ehArvore -> O(n)
@@ -125,7 +139,6 @@ class GrafoNO(Grafo):
                          
         '''
         try:
-            arvore = self.ehArvore()
             inicial = self.vertices[nomeInicial]
             final = self.vertices[nomeFinal]
             pilha.append(inicial)
@@ -144,7 +157,7 @@ class GrafoNO(Grafo):
                             if arvore:
                                 return caminhos
                         else:
-                            caminhos = self._buscaProfundidade(vertice.obterNome(), nomeFinal, pilha, caminhos)
+                            caminhos = self._buscaProfundidade(vertice.obterNome(), nomeFinal, pilha, caminhos, arvore)
                 
                 pilha.pop()
                 return caminhos
