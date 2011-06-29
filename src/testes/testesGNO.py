@@ -9,14 +9,7 @@ import sys
 caminho = os.path.abspath(os.path.join(os.path.dirname(__file__)))
 caminho = os.path.abspath(os.path.split(caminho)[0])
 sys.path.append(caminho)
-if sys.version_info[:2] < (2,7):
-    try:
-        import unittest2 as unittest
-    except ImportError:
-        print 'unittest2 não instalado'
-        sys.exit(1)
-else:
-    import unittest
+import unittest
 import testes.gno
 
 

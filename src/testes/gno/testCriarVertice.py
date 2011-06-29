@@ -13,9 +13,11 @@ class TestCriarVertice(unittest.TestCase):
         nome = 'V1'
         dado1 = 'azul'
         dado2 =  2
-        v1 = Vertice(nome, dado1, dado2)
+        dados = {'cor':dado1,'custo':dado2}
+        v1 = Vertice(nome, dados)
         self.assertEqual(nome, v1.obterNome())
-        self.assertEqual((dado1,dado2), v1.obterDados())
+        self.assertEqual(dados['cor'], v1.obterDados()['cor'])
+        self.assertEqual(dados['custo'], v1.obterDados()['custo'])
         
         
 def suite():

@@ -212,7 +212,7 @@ class GrafoNO(Grafo):
                 fecho = fecho.union(self.fechoTransitivo(adjacente.obterNome(),visitados))
         return fecho
       
-    def adicionarVertice(self, nome, *dados):
+    def adicionarVertice(self, nome, dados = {}):
         try:
             self.redefinirInferencias()
             if nome in self.vertices:
@@ -276,7 +276,7 @@ class GrafoNO(Grafo):
 
 class Vertice(object):
     
-    def __init__(self, identificador, *dados):
+    def __init__(self, identificador, dados = {}):
         assert identificador != None
         self.nome = identificador
         self.dados = dados
@@ -286,3 +286,9 @@ class Vertice(object):
     
     def obterDados(self):
         return self.dados
+    
+    def adicionarDado(self, dados):
+        self.dados = dict(self.dados.keys() + dados.keys())
+    
+    def removerDado(self, chaveDado):
+        return self.dados.pop(chaveDado)
