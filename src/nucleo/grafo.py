@@ -287,6 +287,9 @@ class Vertice(object):
     def obterDados(self):
         return self.dados
     
+    def obterDado(self, chave):
+        return self.dados[chave]
+    
     def adicionarDado(self, dados):
         self.dados = dict(self.dados.keys() + dados.keys())
     
