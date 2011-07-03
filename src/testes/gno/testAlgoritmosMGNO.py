@@ -65,12 +65,14 @@ class TestAlgoritmosMGNO(unittest.TestCase):
         self.grafo.adicionarAresta(0, 1)
         self.grafo.adicionarAresta(0, 2)
         self.grafo.adicionarAresta(0, 3)
+        self.grafo.adicionarAresta(1, 4)
+        self.grafo.adicionarAresta(2, 4)
+        self.grafo.adicionarAresta(3, 5)
+        self.grafo.adicionarAresta(4, 5)
 
-#        self.grafo.colorirVertices()
-        for vertice in self.grafo.obterVertices():
-            print vertice.obterNome(), ": ", vertice.obterDados() , "(", type(vertice.obterDados()), ")"
-            self.assertEquals(vertice.obterDados(),{})
-
+        num_cromatico = self.grafo.colorirVertices()
+        self.assertEqual(num_cromatico, 3)
+        
         
 def suite():
     suite = unittest.TestSuite()

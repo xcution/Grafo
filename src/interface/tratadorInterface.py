@@ -8,7 +8,7 @@ from PyQt4.QtCore import pyqtSlot, pyqtSignal, SIGNAL, QSignalMapper, SLOT, QStr
 from PyQt4.QtGui import QMainWindow, QComboBox, QMessageBox, QTableWidgetItem, \
     QListWidgetItem, QInputDialog, QLineEdit, QSizePolicy
 from interface.interfaceQt import Ui_InterfaceQt
-from nucleo.grafo import GrafoNO
+from nucleo.algoritmosGrafoNO import AlgoritmosGrafoNO
 from recursos.Observable import Observer
 
 class TratadorInterface(QMainWindow, Ui_InterfaceQt, Observer):
@@ -36,7 +36,7 @@ class TratadorInterface(QMainWindow, Ui_InterfaceQt, Observer):
             if nome == '':
                 QMessageBox(self).critical(self, 'ERRO', 'O Gravo deve ter um nome!', buttons=QMessageBox.Ok)
                 return
-            self.grafo = GrafoNO(nome)
+            self.grafo = AlgoritmosGrafoNO(nome)
             self.observe(self.grafo)
         self.limparInferencias()
         vertices = str(self.vertices_edit.text())
@@ -138,19 +138,17 @@ class TratadorInterface(QMainWindow, Ui_InterfaceQt, Observer):
                                 else:
                                     valor = None
                             valor = valor.split(',')
-                            valor = [string.strip() for string in valor]
+                            valor = {string.split(':')[0]:string.split(':')[1] for string in valor}
                             for dado in valor:
-                                if dado.isdigit():
-                                    valor[valor.index(dado)] = int(dado)
+                                if valor[dado].isdigit():
+                                    valor[dado] = int(valor[dado])
                                 else:
                                     try:
-                                        valor[valor.index(dado)] = float(dado)
+                                        valor[dado] = float(valor[dado])
                                     except ValueError:
                                         pass
-                    if valor:
-                        self.grafo.adicionarAresta(v1, v2, tuple(valor))
-                    else:
-                        self.grafo.adicionarAresta(v1, v2, valor)
+                    
+                    self.grafo.adicionarAresta(v1, v2, valor)
         self.eh_conexo.setChecked(self.grafo.ehConexo())
         self.eh_arvore.setChecked(self.grafo.ehArvore())
         self.eh_regular.setChecked(self.grafo.ehRegular())
@@ -182,9 +180,9 @@ class TratadorInterface(QMainWindow, Ui_InterfaceQt, Observer):
             valor = self.grafo.obterAresta(vertice, adjacente.obterNome())
             texto = '\t'+adjacente.obterNome()
             if valor:
-                for x in xrange(len(valor)):
-                    texto_valor += str(valor[x]) + ', '
-                texto += ': ' + texto_valor[:-2]
+                for x in valor:
+                    texto_valor +=  str(x) + ' : ' + str(valor[x]) + ', '
+                texto += '-> ' + texto_valor[:-2]
             self.busca_resultado.addItem(QListWidgetItem(texto))
     
     @pyqtSlot('QString')

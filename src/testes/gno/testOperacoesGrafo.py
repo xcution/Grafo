@@ -50,9 +50,11 @@ class TestOpGrafo(unittest.TestCase):
         self.grafo.adicionarVertice(0)
         self.grafo.adicionarVertice(2)
         self.grafo.adicionarVertice(3)
-        self.grafo.adicionarAresta(0, 2, ('aresta 0 e 2'))
-        self.grafo.adicionarAresta(0, 1, ('peso da aresta', 'desc. aresta', 'arg3', 'etc...'))
-        self.assertEquals(self.grafo.obterAresta(0, 1),('peso da aresta', 'desc. aresta', 'arg3', 'etc...'))
+        self.grafo.adicionarAresta(0, 2, {'custo':2})
+        self.grafo.adicionarAresta(0, 1, {'peso da aresta': 3, 'desc. aresta':'muito custosa'})
+        dados = self.grafo.obterAresta(0, 1)
+        self.assertEquals(dados.get('peso da aresta'), 3)
+        self.assertEqual(dados.get('desc. aresta'), 'muito custosa')
         
         
     def testEhRegular(self):

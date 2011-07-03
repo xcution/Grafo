@@ -15,11 +15,13 @@ class Grafo(Observable):
         assert nome != None
         self.nome = nome
         self.lista_vertices = []
+        self.lista_arestas = []
         self.vertices = {}
         self.arvore = None
         self.conexo = None
         self.regular = None
         self.completo = None
+        self.numero_cromatico = None
         
     def obterNome(self):
         return self.nome
@@ -29,6 +31,7 @@ class Grafo(Observable):
         self.conexo = None
         self.regular = None
         self.completo = None
+        self.numero_cromatico = None
         
     def adicionarVertices(self, nomes, dados):
         for i in xrange(len(nomes)):
@@ -235,13 +238,14 @@ class GrafoNO(Grafo):
         except KeyError as e:
             self._erroChaveNaoExiste(e)
          
-    def adicionarAresta(self, nomeVertice1, nomeVertice2, dados = None):
+    def adicionarAresta(self, nomeVertice1, nomeVertice2, dados = {}):
         try:
             self.redefinirInferencias()
             v1 = self.vertices[nomeVertice1]
             v2 = self.vertices[nomeVertice2]
             self.adjacentes[nomeVertice1][v2] = dados
             self.adjacentes[nomeVertice2][v1] = dados
+            self.lista_arestas.append((dados,v1,v2))
         except KeyError as e:
             self._erroChaveNaoExiste(e)
         
@@ -291,7 +295,7 @@ class Vertice(object):
         return self.dados[chave]
     
     def adicionarDado(self, dados):
-        self.dados = dict(self.dados.keys() + dados.keys())
+        self.dados = dict(self.dados.items() + dados.items())
     
     def removerDado(self, chaveDado):
         return self.dados.pop(chaveDado)
