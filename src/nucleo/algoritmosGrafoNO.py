@@ -65,12 +65,12 @@ class AlgoritmosGrafoNO(GrafoNO):
                         Se Nenhum vértice adjacente a v possui a cor i:
                             Atribuir cor i ao vértice v
                     i := i + 1 
-                Retornar G
+                Retornar número cromático
                 
             Complexidade: self._ordenarGrauNaoCrescente(): O(nlogn)
                           self._temLacos() : O(n)
-                          while(self._temVerticeNaoColorido()): n*O(n) => O(n²) *1
-                          *1 * for vertice in lista_ordenada: O(n²)*n => O(n³) 
+                          while(self._temVerticeNaoColorido()): n*O(n) => O(n²) (*1)
+                          (*1) * for vertice in lista_ordenada: O(n²)*n => O(n³) 
                           vertice.obterDados().has_key('cor'): O(1)
                           self.obterAdjacentes(vertice.obterNome(): O(1)
                           vertice.obterDados().has_key('cor'): O(1)

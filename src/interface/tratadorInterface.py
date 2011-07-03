@@ -85,23 +85,24 @@ class TratadorInterface(QMainWindow, Ui_InterfaceQt, Observer):
     
     @pyqtSlot()            
     def on_remover_vertice_button_clicked(self):
-        '''TODO: Verificar o segfault
+        QMessageBox.critical(self, 'ERRO INTERNO', u'Ação não disponívl devido à um erro interno do QT', buttons=QMessageBox.Ok, defaultButton=QMessageBox.NoButton)
+
         '''
-        pass
-#        vertice = self.remover_vertice_combo.currentText()
-#        colunas = self.tabela_adjacencia.columnCount()
-#        for x in xrange(colunas):
-#            if vertice == str(self.tabela_adjacencia.horizontalHeaderItem(x).text()):
-#                for y in xrange(self.tabela_adjacencia.columnCount()):
-#                    self.tabela_adjacencia.removeCellWidget(y,x)
-#                self.tabela_adjacencia.removeColumn(x)
-#                self.fecho_origem.removeItem(self.fecho_origem.findText(vertice))
-#                self.informacoes_vertice.removeItem(self.informacoes_vertice.findText(vertice))
-#                self.busca_destino.removeItem(self.busca_destino.findText(vertice))
-#                self.busca_origem.removeItem(self.busca_origem.findText(vertice))
-#                self.remover_vertice_combo.removeItem(self.remover_vertice_combo.findText(vertice))
-#                self.ordem_resultado.setText(str(self.grafo.obterOrdem()))
-#                break
+        vertice = self.remover_vertice_combo.currentText()
+        colunas = self.tabela_adjacencia.columnCount()
+        for x in xrange(colunas):
+            if vertice == str(self.tabela_adjacencia.horizontalHeaderItem(x).text()):
+                for y in xrange(self.tabela_adjacencia.columnCount()):
+                    self.tabela_adjacencia.removeCellWidget(y,x)
+                self.tabela_adjacencia.removeColumn(x)
+                self.fecho_origem.removeItem(self.fecho_origem.findText(vertice))
+                self.informacoes_vertice.removeItem(self.informacoes_vertice.findText(vertice))
+                self.busca_destino.removeItem(self.busca_destino.findText(vertice))
+                self.busca_origem.removeItem(self.busca_origem.findText(vertice))
+                self.remover_vertice_combo.removeItem(self.remover_vertice_combo.findText(vertice))
+                self.ordem_resultado.setText(str(self.grafo.obterOrdem()))
+                break
+        '''
            
     @pyqtSlot()
     def on_gerar_arestas_button_clicked(self):
