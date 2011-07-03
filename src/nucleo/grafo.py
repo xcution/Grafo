@@ -24,6 +24,9 @@ class Grafo(Observable):
         self.numero_cromatico = None
         
     def obterNome(self):
+        '''Retorna o nome do grafo
+           Complexidade )(1)
+        '''
         return self.nome
     
     def redefinirInferencias(self):
@@ -125,50 +128,10 @@ class GrafoNO(Grafo):
 
         return self.conexo
     
-    def buscaProfundidade(self, nomeInicial, nomeFinal):
-        '''Delegação para o método _buscaProfundidade()
-        '''
-        pilha = []
-        caminhos = []
-        arvore = self.ehArvore()
-        return self._buscaProfundidade(nomeInicial, nomeFinal, pilha, caminhos, arvore)
-    
-    def _buscaProfundidade(self, nomeInicial, nomeFinal, pilha, caminhos, arvore):
-        '''Executa uma busca em profundidade e retorna Todos os caminhos
-           que levam do vértice 'nomeInicial' ao vértice 'nomeFinal'
-           Complexidade: ehArvore -> O(n)
-                         obterAdjacentes() -> O(1)
-                         Total -> O(n)
-                         
-        '''
-        try:
-            inicial = self.vertices[nomeInicial]
-            final = self.vertices[nomeFinal]
-            pilha.append(inicial)
-            if inicial == final:
-                pilhaC = list(pilha)
-                caminhos.append(pilhaC)
-                return caminhos
-            else:
-                for vertice in self.obterAdjacentes(nomeInicial):
-                    if vertice not in pilha:
-                        if vertice == final:
-                            pilha.append(vertice)
-                            pilhaC = list(pilha)
-                            caminhos.append(pilhaC)
-                            pilha.pop()
-                            if arvore:
-                                return caminhos
-                        else:
-                            caminhos = self._buscaProfundidade(vertice.obterNome(), nomeFinal, pilha, caminhos, arvore)
-                
-                pilha.pop()
-                return caminhos
-        except KeyError as e:
-            self._erroChaveNaoExiste(e)
-                
-        
     def ehCompleto(self):
+        '''Verifica se o grafo é copleto
+           Complexidade: O(n) | n é o número de vértices
+        '''
         if self.completo is None:
             vertices = self.obterVertices()
             if len(vertices) > 1:
@@ -183,6 +146,9 @@ class GrafoNO(Grafo):
         return self.completo
     
     def obterGrau(self, nomeVertice):
+        '''Retorna o grau do vértice de nome nomeVertice
+           Complexidade: O(1)
+        '''
         
         return len(self.obterAdjacentes(nomeVertice))
     
@@ -207,6 +173,11 @@ class GrafoNO(Grafo):
         return self.arvore
     
     def fechoTransitivo(self, vertice, visitados = set()):
+        '''Retorna o conjunto do nome dos vértices que pertencem ao fecho 
+           transitivo do vértice alvo
+           Complexidade: O(m) | m é o número de arestas do grafo (pior caso m = n-1
+                              | n é o número de vértices no grafo )
+        '''
         fecho = set()
         fecho.add(vertice)
         visitados.add(vertice)
@@ -216,6 +187,9 @@ class GrafoNO(Grafo):
         return fecho
       
     def adicionarVertice(self, nome, dados = {}):
+        '''Adiciona um vértice no grafo
+           Coplexidade: O(1)
+        '''
         try:
             self.redefinirInferencias()
             if nome in self.vertices:
@@ -228,6 +202,10 @@ class GrafoNO(Grafo):
             self._erroChaveExiste(e)
             
     def removerVertice(self, nomeVertice):
+        '''Remove o vértice de nome nomeVertice do grafo e suas arestas
+           Complexidade: O(a) | a é o número de adjacentes do vértice alvo (pior caso a = n-1)
+                              | n é o número de vértices no grafo 
+        '''
         try:
             self.redefinirInferencias()
             for adjacente in self.obterAdjacentes(nomeVertice):
@@ -239,6 +217,9 @@ class GrafoNO(Grafo):
             self._erroChaveNaoExiste(e)
          
     def adicionarAresta(self, nomeVertice1, nomeVertice2, dados = {}):
+        '''Adiciona uma aresta ligando os vértices de nome: nomeVertice1 e nomeVertice2
+           Complexidade: O(1)
+        '''
         try:
             self.redefinirInferencias()
             v1 = self.vertices[nomeVertice1]
@@ -250,6 +231,9 @@ class GrafoNO(Grafo):
             self._erroChaveNaoExiste(e)
         
     def removerAresta(self, nomeVertice1, nomeVertice2):
+        '''Remove a aresta que conecta os vertices de nomeVertice1 e nomeVertice2
+           Complexidade: O(1)
+        '''
         try:
             self.redefinirInferencias()
             v1 = self.vertices[nomeVertice1]
@@ -260,6 +244,9 @@ class GrafoNO(Grafo):
             self._erroChaveNaoExiste(e)
         
     def obterAresta(self, nomeVertice1, nomeVertice2):
+        '''Retorna a aresta que conecta os vertices de nomeVertice1 e nomeVertice2
+           Complexidade: O(1)
+        '''
         vertice2 = self.vertices[nomeVertice2]
         return self.adjacentes[nomeVertice1][vertice2]
 
@@ -274,6 +261,9 @@ class GrafoNO(Grafo):
             self._erroChaveNaoExiste(e)
             
     def limpar(self):
+        '''remove todas as arestas do grafo
+           Complexidade O(n) | n é o número de vértices
+        '''
         for vertice in self.lista_vertices:
             self.adjacentes[vertice.obterNome()] = {}
         self.redefinirInferencias()
