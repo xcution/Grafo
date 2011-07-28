@@ -7,7 +7,8 @@ Created on 08/04/2011
 import os
 import sys
 caminho = os.path.abspath(os.path.join(os.path.dirname(__file__)))
-caminho = os.path.abspath(os.path.split(caminho)[0])
+while not caminho.endswith('src'):
+	caminho = os.path.abspath(os.path.split(caminho)[0])
 sys.path.append(caminho)
 import unittest
 import testes.gno

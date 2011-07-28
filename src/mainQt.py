@@ -11,7 +11,8 @@ from multiprocessing import freeze_support
 import sys
 import os
 caminho = os.path.abspath(os.path.join(os.path.dirname(__file__)))
-caminho = os.path.abspath(os.path.split(caminho)[0])
+while not caminho.endswith('src'):
+		caminho = os.path.abspath(os.path.split(caminho)[0])
 sys.path.append(caminho)
 from interface.tratadorInterface import TratadorInterface
 

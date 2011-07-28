@@ -11,6 +11,9 @@ class TestOpGrafo(unittest.TestCase):
 
     def setUp(self):
         self.grafo = GrafoNO('Teste')
+        
+    def tearDown(self):
+        del self.grafo
 
     def testAdicionarVertice(self):
         self.grafo.adicionarVertice('v1')

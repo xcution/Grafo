@@ -11,6 +11,13 @@ class AlgoritmosGrafoNO(GrafoNO):
     
     def __init__(self, nome):
         super(AlgoritmosGrafoNO, self).__init__(nome)
+        
+    def tornarCompleto(self,k):
+        vertices = self.obterVertices()
+        for x in xrange(k):
+            for y in xrange(x+1, k):
+                self.adicionarAresta(vertices[x].obterNome(),
+                                     vertices[y].obterNome())
     
     def buscaProfundidade(self, nomeInicial, nomeFinal):
         '''Delegação para o método _buscaProfundidade()
@@ -104,6 +111,7 @@ class AlgoritmosGrafoNO(GrafoNO):
                                 vertice.adicionarDado({'cor': i})
                 i = i + 1
             self.numero_cromatico = i
+        
         return self.numero_cromatico
     
     def _temLacos(self):
